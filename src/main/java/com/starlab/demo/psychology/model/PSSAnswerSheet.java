@@ -17,19 +17,16 @@ import java.util.List;
 public class PSSAnswerSheet {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pss_id")
     private long id;
 
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDate inspectedDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToOne
-    @JoinColumn(name = "psychology_test_id")
-    private PsychologyTestInfo psychologyTestInfo;
 
     private int q1;
     private int q2;

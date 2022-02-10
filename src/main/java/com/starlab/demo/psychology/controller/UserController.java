@@ -24,6 +24,7 @@ public class UserController {
             User user = User.builder()
                     .name(userDTO.getName())
                     .email(userDTO.getEmail())
+                    .medicalInfo(userDTO.getMedicalInfo())
                     .build();
 
             User registeredUser = userService.createUser(user);

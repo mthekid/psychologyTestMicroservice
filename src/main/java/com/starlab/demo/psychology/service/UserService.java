@@ -1,5 +1,6 @@
 package com.starlab.demo.psychology.service;
 
+import com.starlab.demo.psychology.model.PSSAnswerSheet;
 import com.starlab.demo.psychology.model.User;
 import com.starlab.demo.psychology.repo.UserRepo;
 import lombok.extern.slf4j.Slf4j;
@@ -24,5 +25,17 @@ public class UserService {
         }
 
         return userRepo.save(user);
+    }
+
+    public User findUser(User user) {
+        return  userRepo.findByNameAndEmail(user.getName(), user.getEmail());
+    }
+
+    public User addTestRecord(User user, PSSAnswerSheet pssAnswerSheet) {
+        return userRepo.save(user);
+    }
+
+    public User checkMedicalInfo(String medicalInfo) {
+        return userRepo.findByMedicalInfo(medicalInfo);
     }
 }
