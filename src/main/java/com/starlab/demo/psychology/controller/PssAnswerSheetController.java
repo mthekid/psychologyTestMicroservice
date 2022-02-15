@@ -2,6 +2,8 @@ package com.starlab.demo.psychology.controller;
 
 import com.starlab.demo.psychology.dto.PSSTestResultDTO;
 import com.starlab.demo.psychology.dto.UserDTO;
+import com.starlab.demo.psychology.dto.api.ApiDTO;
+import com.starlab.demo.psychology.dto.api.QuestionareResultDTO;
 import com.starlab.demo.psychology.model.PSSAnswerSheet;
 import com.starlab.demo.psychology.model.User;
 import com.starlab.demo.psychology.service.PsychologTestService;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -30,11 +33,37 @@ public class PssAnswerSheetController {
     public ResponseEntity<?> getPSSTests(@RequestParam String psychologyMedicalInfo) {
         // 사용자 정보 찾아오기
 
-        User registeredUser = userService.checkMedicalInfo(psychologyMedicalInfo);
+        User registeredUser = userService.getByMedicalInfo(psychologyMedicalInfo);
 
         List<PSSAnswerSheet> results = psychologTestService.getRecords(registeredUser);
 
-        return ResponseEntity.ok(results);
+        List<QuestionareResultDTO> questionareResultDTOS = new ArrayList<>();
+
+        for(PSSAnswerSheet pssAnswerSheet : results) {
+            QuestionareResultDTO questionareResultDTO = QuestionareResultDTO.builder()
+                    .inspectedDate(pssAnswerSheet.getInspectedDate().toString())
+                    .q1(String.valueOf(pssAnswerSheet.getQ1()))
+                    .q2(String.valueOf(pssAnswerSheet.getQ2()))
+                    .q3(String.valueOf(pssAnswerSheet.getQ3()))
+                    .q4(String.valueOf(pssAnswerSheet.getQ4()))
+                    .q5(String.valueOf(pssAnswerSheet.getQ5()))
+                    .q6(String.valueOf(pssAnswerSheet.getQ6()))
+                    .q7(String.valueOf(pssAnswerSheet.getQ7()))
+                    .q8(String.valueOf(pssAnswerSheet.getQ8()))
+                    .q9(String.valueOf(pssAnswerSheet.getQ9()))
+                    .q10(String.valueOf(pssAnswerSheet.getQ10()))
+                    .build();
+
+            questionareResultDTOS.add(questionareResultDTO);
+        }
+
+        ApiDTO apiDTO = ApiDTO.builder()
+                .name(registeredUser.getName())
+                .testName("stress[PSS]")
+                .testResult(questionareResultDTOS)
+                .build();
+
+        return ResponseEntity.ok(apiDTO);
     }
 
     @PostMapping("record-test")

@@ -10,5 +10,5 @@ import java.util.List;
 @Repository
 public interface PSSAnswerSheetRepo extends CrudRepository<PSSAnswerSheet, Long> {
 
-    public List<PSSAnswerSheet> findAllByUser(User user);
+    List<PSSAnswerSheet> findAllByUser(User user);
 }

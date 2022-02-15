@@ -35,7 +35,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public User checkMedicalInfo(String medicalInfo) {
+    public User getByMedicalInfo(String medicalInfo) {
         return userRepo.findByMedicalInfo(medicalInfo);
     }
 }
